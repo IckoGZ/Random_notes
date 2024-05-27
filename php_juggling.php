@@ -3,7 +3,7 @@
 <?php
 function find_md4_match() {
     $prefix = "0e";
-    for ($i = 0; $i < 1000000000; $i++) {
+    for ($i = 0; $i < 100000000000; $i++) {
         $candidate = $prefix . $i;
         if ($candidate == hash("md4", $candidate)) {
             return $candidate;
